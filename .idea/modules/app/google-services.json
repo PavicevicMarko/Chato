@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "996273061796",
+    "firebase_url": "https://chato-d5d62.firebaseio.com",
+    "project_id": "chato-d5d62",
+    "storage_bucket": "chato-d5d62.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996273061796:android:79ba6011017384a0e4cb31",
+        "android_client_info": {
+          "package_name": "com.example.chato"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996273061796-605gd4fh7r0fgkrq22knl4aoqsp51bbt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chato",
+            "certificate_hash": "ff5601ebe6ac69eeb123f1f1aca74af89d0c263d"
+          }
+        },
+        {
+          "client_id": "996273061796-dkt7dnk2d975s7c261ovk8cadb4928rg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJZOjWdyNMByfT_yn9JeQM8F9ErWr68hU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996273061796-dkt7dnk2d975s7c261ovk8cadb4928rg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
