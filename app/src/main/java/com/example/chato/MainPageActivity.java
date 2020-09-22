@@ -17,6 +17,17 @@ public class MainPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_page);
 
         Button odjavi = findViewById(R.id.odjavi);
+        Button najdiOsebo = findViewById(R.id.najdiOsebo );
+
+
+        najdiOsebo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(getApplicationContext(), najdiOseboActivity.class));
+            }
+        });
+
+
         odjavi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
