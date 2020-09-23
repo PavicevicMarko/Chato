@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -22,6 +24,20 @@ public class najdiOseboActivity extends AppCompatActivity {
         setContentView(R.layout.activity_najdi_osebo);
 
         initializeRecyclerView();
+        getSeznamOseb();
+    }
+
+    private void getSeznamOseb(){
+        Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null,null);
+        assert phones != null;
+        while(phones.moveToNext()){
+            String ime = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String fonska = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+            Uporabnik kontakt = new Uporabnik(ime,fonska);
+            uporabniki.add(kontakt);
+            nAdapter.notifyDataSetChanged();
+        }
     }
 
     private void initializeRecyclerView() {
