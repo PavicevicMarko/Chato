@@ -19,7 +19,7 @@ public class SeznamUpoAdapter extends RecyclerView.Adapter<SeznamUpoAdapter.UpoV
 
     @NonNull
     @Override
-    public UpoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { // TODO: 22/09/2020 mogoče zakomentirat 
+    public UpoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_uporabnik,null,false);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutView.setLayoutParams(lp);
@@ -33,7 +33,7 @@ public class SeznamUpoAdapter extends RecyclerView.Adapter<SeznamUpoAdapter.UpoV
         holder.ime.setText(uporabniki.get(position).getIme());
         holder.fonska.setText(uporabniki.get(position).getFonska());
 
-    }
+     }
 
     @Override
     public int getItemCount() {

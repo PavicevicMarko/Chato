@@ -17,7 +17,7 @@ public class najdiOseboActivity extends AppCompatActivity {
     private RecyclerView.Adapter nAdapter;
     private RecyclerView.LayoutManager nListLayoutManager;
 
-    ArrayList<Uporabnik> uporabniki;
+    ArrayList<Uporabnik> uporabniki = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +29,6 @@ public class najdiOseboActivity extends AppCompatActivity {
 
     private void getSeznamOseb(){
         Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null,null);
-        assert phones != null;
         while(phones.moveToNext()){
             String ime = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String fonska = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
