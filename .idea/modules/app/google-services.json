@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "996273061796-v8mak83b4oeavt1bt7b17pl6ma1tpmeu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chato",
+            "certificate_hash": "77f03e410a6ec75def00e8823a35beaf671db48c"
+          }
+        },
+        {
           "client_id": "996273061796-605gd4fh7r0fgkrq22knl4aoqsp51bbt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

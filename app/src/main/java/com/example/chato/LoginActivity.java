@@ -19,10 +19,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private EditText fonska, koda;
     private TextView success;
     private Button poslji;
@@ -38,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
         uspesnoPrijavljen();
-
 
         fonska = findViewById(R.id.fonska);
         koda = findViewById(R.id.koda);
@@ -78,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 super.onCodeSent(verifikacija, spetPoslji);
 
                 sVerifikacija = verifikacija;
-                poslji.setText("Verify code");
+                poslji.setText("Preveri Kodo");
             }
         };
     }
@@ -94,9 +100,32 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){{
-                    uspesnoPrijavljen();
-                }}
+                if(task.isSuccessful())
+                    {
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        if(user != null){
+                            final DatabaseReference userDB = FirebaseDatabase.getInstance().getReference().child("user").child(user.getUid());
+                            userDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                     if(!snapshot.exists()){                                        //če ne obstaja, da noter v bazo
+                                         Map<String, Object> userMap = new HashMap<>();
+                                         userMap.put("phone", user.getPhoneNumber());
+                                         userMap.put("name", user.getPhoneNumber());
+                                         userDB.updateChildren(userMap);
+                                     }
+                                    uspesnoPrijavljen();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                    }
+
             }
         });
     }
