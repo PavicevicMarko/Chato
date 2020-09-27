@@ -26,8 +26,9 @@ public class NajdiOsebeActivity extends AppCompatActivity {
     private RecyclerView.Adapter nAdapter;
     private RecyclerView.LayoutManager nListLayoutManager;
 
-    ArrayList<Uporabnik> kontakti,   //bere v telefonu kontakte
-                         uporabniki; //updata recycle view
+    ArrayList<Uporabnik> kontakti;   //bere v telefonu kontakte
+    ArrayList<Uporabnik> uporabniki; //updata recycle view
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,20 +65,23 @@ public class NajdiOsebeActivity extends AppCompatActivity {
 
     private void getUserDetails(Uporabnik kontakt) {
         DatabaseReference userDB = FirebaseDatabase.getInstance().getReference().child("user");
-        Query query = userDB.orderByChild("fonska").equalTo(kontakt.getFonska());
+        Query query;
+        query = userDB.orderByChild("phone").equalTo(kontakt.getFonska());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    String fonska = "",
-                            ime ="";
+                    String fonska = "";
+                    String ime = "";
                     for(DataSnapshot childSnapshot : snapshot.getChildren()){
-                        if(childSnapshot.child("fonska").getValue()!=null){
-                            fonska = childSnapshot.child("fonska").getValue().toString();
-                        }if(childSnapshot.child("ime").getValue()!=null){
-                            fonska = childSnapshot.child("ime").getValue().toString();
+                        if(childSnapshot.child("phone").getValue()!=null){
+                            fonska = childSnapshot.child("phone").getValue().toString();
                         }
-                    Uporabnik uporabnik = new Uporabnik(ime,fonska);
+                        if(childSnapshot.child("phone").getValue()!=null){
+                            ime = childSnapshot.child("phone").getValue().toString();
+                        }
+
+                        Uporabnik uporabnik = new Uporabnik(ime,fonska);
                         uporabniki.add(uporabnik);
                         nAdapter.notifyDataSetChanged();
                         return;
@@ -93,11 +97,11 @@ public class NajdiOsebeActivity extends AppCompatActivity {
     }
 
     private String getKlicna(){
-        String iso = null;
+        String iso = "";
         TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(getApplicationContext().TELEPHONY_SERVICE);
         if(telephonyManager.getNetworkCountryIso()!=null){
-            if(!telephonyManager.getNetworkCountryIso().toString().equals("")){
-                iso = telephonyManager.getNetworkCountryIso().toString();
+            if(!telephonyManager.getNetworkCountryIso().equals("")){
+                iso = telephonyManager.getNetworkCountryIso();
             }
         }
 
