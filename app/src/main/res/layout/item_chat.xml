@@ -9,17 +9,15 @@
     android:id="@+id/layout">
 
     <TextView
-        android:id="@+id/ime"
+        android:padding="20sp"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ime"
+        android:text="title"
+
         />
 
-    <TextView
-        android:id="@+id/fonska"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="fonska" />
+
 
 
 </LinearLayout>

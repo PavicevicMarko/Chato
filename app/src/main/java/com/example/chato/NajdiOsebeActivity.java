@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 
+import com.example.chato.User.SeznamUpoAdapter;
+import com.example.chato.User.Uporabnik;
+import com.example.chato.Utils.KlicnaConverter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,11 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 public class NajdiOsebeActivity extends AppCompatActivity {
 
@@ -63,7 +62,7 @@ public class NajdiOsebeActivity extends AppCompatActivity {
                 fonska = klicna + fonska;
             }
 
-            Uporabnik kontakt = new Uporabnik(ime,fonska);
+            Uporabnik kontakt = new Uporabnik("", ime,fonska);
             kontakti.add(kontakt);
             getUserDetails(kontakt);
 
@@ -103,7 +102,7 @@ public class NajdiOsebeActivity extends AppCompatActivity {
                             ime = childSnapshot.child("name").getValue().toString();
                         }
 
-                        Uporabnik uporabnik = new Uporabnik(ime,fonska);
+                        Uporabnik uporabnik = new Uporabnik(childSnapshot.getKey(), ime, fonska);
 
                         if (ime.equals(fonska)){
                             for (Uporabnik iterator : kontakti) {
@@ -118,9 +117,6 @@ public class NajdiOsebeActivity extends AppCompatActivity {
                             nAdapter.notifyDataSetChanged();
                         }
                     }
-//                    LinkedHashSet<Uporabnik> set = new LinkedHashSet<>(uporabniki);
-//                    uporabniki.clear();
-//                    uporabniki.addAll(set);
                 }
 
             }
@@ -165,6 +161,7 @@ public class NajdiOsebeActivity extends AppCompatActivity {
 
         return KlicnaConverter.getPhone(iso);
     }
+
     private void initializeRecyclerView() {
 
     nListOseb = findViewById(R.id.najdiOsebo);

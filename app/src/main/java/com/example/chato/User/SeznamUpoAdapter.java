@@ -1,13 +1,18 @@
-package com.example.chato;
+package com.example.chato.User;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.chato.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -30,10 +35,20 @@ public class SeznamUpoAdapter extends RecyclerView.Adapter<SeznamUpoAdapter.UpoV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UpoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UpoViewHolder holder, final int position) {
         holder.ime.setText(uporabniki.get(position).getIme());
         holder.fonska.setText(uporabniki.get(position).getFonska());
 
+        holder.mLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();   //vrne unique ID od pogovora
+
+                FirebaseDatabase.getInstance().getReference().child("user").child(FirebaseAuth.getInstance().getUid()).child("chat").child(key).setValue(true);
+                FirebaseDatabase.getInstance().getReference().child("user").child(uporabniki.get(position).getUid()).child("chat").child(key).setValue(true);
+
+            }
+        });
      }
 
     @Override
@@ -44,10 +59,12 @@ public class SeznamUpoAdapter extends RecyclerView.Adapter<SeznamUpoAdapter.UpoV
 
     public class UpoViewHolder extends RecyclerView.ViewHolder{
         public TextView ime, fonska;
+        public LinearLayout mLayout;
         public UpoViewHolder(View view){
             super(view);
             ime = view.findViewById(R.id.ime);
             fonska = view.findViewById(R.id.fonska);
+            mLayout = view.findViewById(R.id.layout);
         }
     }
 }

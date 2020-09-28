@@ -1,4 +1,4 @@
-package com.example.chato;
+package com.example.chato.Utils;
 
 import java.util.HashMap;
 import java.util.Map;

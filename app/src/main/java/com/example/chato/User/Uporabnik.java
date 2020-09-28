@@ -1,12 +1,14 @@
-package com.example.chato;
+package com.example.chato.User;
 
 public class Uporabnik {
 
-    private String ime, fonska;
+    private String ime, fonska, uid;
 
-    public Uporabnik (String ime, String fonska){
+    public Uporabnik ( String uid, String ime, String fonska){
+        this.uid = uid;
         this.ime = ime;
         this.fonska = fonska;
+
     }
 
     public String getIme() {
@@ -15,6 +17,10 @@ public class Uporabnik {
 
     public String getFonska() {
         return fonska;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public void setIme(String ime) {
