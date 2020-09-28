@@ -17,5 +17,7 @@ public class Uporabnik {
         return fonska;
     }
 
-
+    public void setIme(String ime) {
+        this.ime = ime;
+    }
 }

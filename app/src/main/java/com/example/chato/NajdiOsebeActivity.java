@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
-import android.widget.LinearLayout;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,7 +17,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class NajdiOsebeActivity extends AppCompatActivity {
 
@@ -28,6 +31,7 @@ public class NajdiOsebeActivity extends AppCompatActivity {
 
     ArrayList<Uporabnik> kontakti;   //bere v telefonu kontakte
     ArrayList<Uporabnik> uporabniki; //updata recycle view
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,8 @@ public class NajdiOsebeActivity extends AppCompatActivity {
 
         initializeRecyclerView();
         getSeznamOseb();
+
+
     }
 
     private void getSeznamOseb(){
@@ -60,7 +66,21 @@ public class NajdiOsebeActivity extends AppCompatActivity {
             Uporabnik kontakt = new Uporabnik(ime,fonska);
             kontakti.add(kontakt);
             getUserDetails(kontakt);
+
         }
+    }
+
+    boolean checkExistence(Uporabnik uporabnik){
+        boolean test= true;
+        for(int i = 0 ; i<uporabniki.size();i++)
+        {
+            if(uporabniki.get(i).getFonska().equals(uporabnik.getFonska()))
+            {
+                test = false;
+                break;
+            }
+        }
+        return test;
     }
 
     private void getUserDetails(Uporabnik kontakt) {
@@ -73,28 +93,66 @@ public class NajdiOsebeActivity extends AppCompatActivity {
                 if(snapshot.exists()){
                     String fonska = "";
                     String ime = "";
+
+
                     for(DataSnapshot childSnapshot : snapshot.getChildren()){
                         if(childSnapshot.child("phone").getValue()!=null){
                             fonska = childSnapshot.child("phone").getValue().toString();
                         }
-                        if(childSnapshot.child("phone").getValue()!=null){
-                            ime = childSnapshot.child("phone").getValue().toString();
+                        if(childSnapshot.child("name").getValue()!=null){
+                            ime = childSnapshot.child("name").getValue().toString();
                         }
 
                         Uporabnik uporabnik = new Uporabnik(ime,fonska);
-                        uporabniki.add(uporabnik);
-                        nAdapter.notifyDataSetChanged();
-                        return;
-                    }
-                }
-            }
 
+                        if (ime.equals(fonska)){
+                            for (Uporabnik iterator : kontakti) {
+                                if(iterator.getFonska().equals(uporabnik.getFonska())){
+                                    uporabnik.setIme(iterator.getIme());
+                                }
+                            }
+                        }
+
+                        if(checkExistence(uporabnik)){
+                            uporabniki.add(uporabnik);
+                            nAdapter.notifyDataSetChanged();
+                        }
+                    }
+//                    LinkedHashSet<Uporabnik> set = new LinkedHashSet<>(uporabniki);
+//                    uporabniki.clear();
+//                    uporabniki.addAll(set);
+                }
+
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+
     }
+//    public ArrayList<Uporabnik> popraviSeznam (ArrayList<Uporabnik> uporabniki){
+//
+//        LinkedHashSet<Uporabnik> set = new LinkedHashSet<>(uporabniki);
+//
+//        Set<Uporabnik> tempList = new HashSet<>();
+//        Set<Uporabnik> finalSet = new HashSet<>();
+//
+//        for (Uporabnik uporabnik : uporabniki){
+//            if(tempList.contains(uporabnik)){
+//                finalSet.add(uporabnik);
+//            }
+//            else {
+//                tempList.add(uporabnik);
+//            }
+//        }
+//        ArrayList<Uporabnik> finalList = new ArrayList<Uporabnik>();
+//        finalList.addAll(tempList);
+//        return finalList;
+//        return new ArrayList<>(set);
+//    }
+
+
 
     private String getKlicna(){
         String iso = "";
