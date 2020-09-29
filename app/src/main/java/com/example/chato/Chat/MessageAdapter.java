@@ -37,7 +37,7 @@ public class MessageAdapter extends RecyclerView.Adapter<com.example.chato.Chat.
     @Override
     public void onBindViewHolder(@NonNull MessageAdapter.MessageViewHolder holder, final int position) {
         holder.nMessage.setText(messages.get(position).getText());
-        holder.nSender.setText(messages.get(position).getText());
+        holder.nSender.setText(messages.get(position).getSenderID());
 
     }
 
