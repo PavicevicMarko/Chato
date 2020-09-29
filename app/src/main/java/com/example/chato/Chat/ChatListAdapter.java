@@ -1,5 +1,7 @@
 package com.example.chato.Chat;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.chato.ChatActivity;
 import com.example.chato.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -36,14 +39,17 @@ public class ChatListAdapter extends RecyclerView.Adapter<com.example.chato.Chat
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatListAdapter.ChatListViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ChatListAdapter.ChatListViewHolder holder, final int position) {
         holder.title.setText(Pogovori.get(position).getChatID());
 
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("chatID", Pogovori.get(holder.getAdapterPosition()).getChatID());
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
             }
         });
     }
