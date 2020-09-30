@@ -15,6 +15,7 @@ import com.example.chato.Chat.ChatListAdapter;
 import com.example.chato.Chat.Pogovor;
 import com.example.chato.User.SeznamUpoAdapter;
 import com.example.chato.User.Uporabnik;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,9 +38,10 @@ public class MainPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
+        Fresco.initialize(this);
+
         Button odjavi = findViewById(R.id.odjavi);
         Button najdiOsebo = findViewById(R.id.najdiOsebo);
-
 
         najdiOsebo.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -75,15 +77,16 @@ public class MainPageActivity extends AppCompatActivity {
             if(snapshot.exists()){
                 for (DataSnapshot childSnapshot : snapshot.getChildren()){    //loop skozi vsaki ID v chat
                     Pogovor chat = new Pogovor(childSnapshot.getKey());
-                    for(Pogovor iterator : chats){
-                        boolean exists = false;
-                        if(iterator.getChatID().equals(chat.getChatID())){
-                            exists = true;
-                        }
-                        if (exists){
-                            continue;
-                        }
 
+                    boolean exists = false;
+                    for(Pogovor iterator : chats) {
+                        if (iterator.getChatID().equals(chat.getChatID())) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    if(exists){
+                        continue;
                     }
                     chats.add(chat);
                     nChatAdapter.notifyDataSetChanged();
@@ -93,7 +96,6 @@ public class MainPageActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }

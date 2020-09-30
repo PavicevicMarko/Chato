@@ -3,6 +3,8 @@ package com.example.chato.Chat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.chato.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.stfalcon.frescoimageviewer.ImageViewer;
 
 import java.util.ArrayList;
 
@@ -35,10 +38,21 @@ public class MessageAdapter extends RecyclerView.Adapter<com.example.chato.Chat.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageAdapter.MessageViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MessageAdapter.MessageViewHolder holder, final int position) {
         holder.nMessage.setText(messages.get(position).getText());
         holder.nSender.setText(messages.get(position).getSenderID());
 
+        if( messages.get(holder.getAdapterPosition()).getMediaUrlList().isEmpty()){
+            holder.displayMedia.setVisibility(View.GONE);
+        }
+        holder.displayMedia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ImageViewer.Builder(v.getContext(), messages.get(holder.getAdapterPosition()).getMediaUrlList())
+                        .setStartPosition(0)
+                        .show();
+            }
+        });
     }
 
     @Override
@@ -50,12 +64,14 @@ public class MessageAdapter extends RecyclerView.Adapter<com.example.chato.Chat.
     public class MessageViewHolder extends RecyclerView.ViewHolder{
         TextView nMessage,
                 nSender;
+        Button displayMedia;
         LinearLayout mLayout;
         public MessageViewHolder(View view){
             super(view);
             mLayout = view.findViewById(R.id.layout);
             nSender = view.findViewById(R.id.sender);
             nMessage = view.findViewById(R.id.message);
+            displayMedia = view.findViewById(R.id.displayMedia);
         }
     }
 }

@@ -83,14 +83,21 @@ public class ChatActivity extends AppCompatActivity {
                 if(snapshot.exists())  {
                     String text = "",
                              creatorID  ="";
+                    ArrayList<String> mediaUrlList = new ArrayList<>();
+
                     if(snapshot.child("text").getValue() != null){
                         text = snapshot.child("text").getValue().toString();    //vrne sporočilo iz baze
                     }
                     if(snapshot.child("creator").getValue() != null){
                         creatorID = snapshot.child("creator").getValue().toString();   //vrne pošitelja iz baze
                     }
+                    if(snapshot.child("media").getChildrenCount() > 0) {              //nekaj je v child media
+                        for (DataSnapshot mediaSnapshot : snapshot.child("media").getChildren()){
+                            mediaUrlList.add(mediaSnapshot.getValue().toString());
+                        }
+                    }
 
-                    Message message = new Message(snapshot.getKey(), creatorID, text);  //sporočilo
+                    Message message = new Message(snapshot.getKey(), creatorID, text, mediaUrlList);  //sporočilo
                     messageList.add(message);
                     nChatListLayoutManager.scrollToPosition(messageList.size()-1);      // scrolla na zadnji element v chatu
                     nmessageListAdapter.notifyDataSetChanged();
