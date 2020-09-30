@@ -1,9 +1,10 @@
 package com.example.chato.User;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,10 +17,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class SeznamUpoAdapter extends RecyclerView.Adapter<SeznamUpoAdapter.UpoViewHolder> {
+public class UporabnikiAdapter extends RecyclerView.Adapter<UporabnikiAdapter.UpoViewHolder> {
 
     ArrayList<Uporabnik> uporabniki;
-    public SeznamUpoAdapter(ArrayList<Uporabnik> uporabniki){
+    public UporabnikiAdapter(ArrayList<Uporabnik> uporabniki){
         this.uporabniki = uporabniki;
     }
 
@@ -35,9 +36,17 @@ public class SeznamUpoAdapter extends RecyclerView.Adapter<SeznamUpoAdapter.UpoV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UpoViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final UpoViewHolder holder, final int position) {
         holder.ime.setText(uporabniki.get(position).getIme());
         holder.fonska.setText(uporabniki.get(position).getFonska());
+
+        holder.add.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                 uporabniki.get(holder.getAdapterPosition()).setSelected(isChecked);
+            }
+        });
+
 
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,11 +69,13 @@ public class SeznamUpoAdapter extends RecyclerView.Adapter<SeznamUpoAdapter.UpoV
     public class UpoViewHolder extends RecyclerView.ViewHolder{
         public TextView ime, fonska;
         public LinearLayout mLayout;
+        CheckBox add;
         public UpoViewHolder(View view){
             super(view);
             ime = view.findViewById(R.id.ime);
             fonska = view.findViewById(R.id.fonska);
             mLayout = view.findViewById(R.id.layout);
+            add= view.findViewById(R.id.add);
         }
     }
 }

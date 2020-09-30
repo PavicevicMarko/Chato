@@ -9,8 +9,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
+import android.view.View;
+import android.widget.Button;
 
-import com.example.chato.User.SeznamUpoAdapter;
+import com.example.chato.User.UporabnikiAdapter;
 import com.example.chato.User.Uporabnik;
 import com.example.chato.Utils.KlicnaConverter;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +23,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NajdiOsebeActivity extends AppCompatActivity {
 
@@ -40,11 +43,20 @@ public class NajdiOsebeActivity extends AppCompatActivity {
         kontakti = new ArrayList<>();
         uporabniki = new ArrayList<>();
 
+//        Button create = findViewById(R.id.create);
+//        create.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                createChat();
+//            }
+//        });
         initializeRecyclerView();
         getSeznamOseb();
 
 
     }
+
+
 
     private void getSeznamOseb(){
         String klicna = getKlicna();
@@ -169,7 +181,7 @@ public class NajdiOsebeActivity extends AppCompatActivity {
     nListOseb.setHasFixedSize(false);
     nListLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
     nListOseb.setLayoutManager(nListLayoutManager);
-    nAdapter = new SeznamUpoAdapter(uporabniki);
+    nAdapter = new UporabnikiAdapter(uporabniki);
     nListOseb.setAdapter(nAdapter);
     }
 }

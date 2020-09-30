@@ -13,8 +13,6 @@ import android.widget.Button;
 
 import com.example.chato.Chat.ChatListAdapter;
 import com.example.chato.Chat.Pogovor;
-import com.example.chato.User.SeznamUpoAdapter;
-import com.example.chato.User.Uporabnik;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
 
@@ -38,6 +37,15 @@ public class MainPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
+        OneSignal.startInit(this).init();
+        OneSignal.setSubscription(true);
+        OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
+            @Override
+            public void idsAvailable(String userId, String registrationId) {
+                FirebaseDatabase.getInstance().getReference().child("user").child(FirebaseAuth.getInstance().getUid()).child("notificationKey").setValue(userId);
+            }
+        });
+        OneSignal.setInFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification);
         Fresco.initialize(this);
 
         Button odjavi = findViewById(R.id.odjavi);
@@ -54,6 +62,7 @@ public class MainPageActivity extends AppCompatActivity {
         odjavi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                OneSignal.setSubscription(false);
                 FirebaseAuth.getInstance().signOut();
                 Intent gatekeep = new Intent(getApplicationContext(), LoginActivity.class);
                 gatekeep.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
